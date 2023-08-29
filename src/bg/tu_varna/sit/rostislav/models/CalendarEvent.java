@@ -1,24 +1,45 @@
 package bg.tu_varna.sit.rostislav.models;
 
+
+import bg.tu_varna.sit.rostislav.parsers.LocalDateAdapter;
+import bg.tu_varna.sit.rostislav.parsers.LocalTimeAdapter;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class CalendarEvent {
 
+
+@XmlAccessorType(XmlAccessType.FIELD)
+public class CalendarEvent  implements Serializable {
+    @XmlElement
     private String name;
+    @XmlElement
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate date;
+    @XmlElement
+    @XmlJavaTypeAdapter(LocalTimeAdapter.class)
     private LocalTime starTime;
+    @XmlElement
+    @XmlJavaTypeAdapter(LocalTimeAdapter.class)
     private LocalTime endTime;
+    @XmlElement
     private String note;
+    @XmlAttribute
     private boolean isHoliday;
 
-    public CalendarEvent(String name, LocalDate date, LocalTime starTime, LocalTime endTime, String note, boolean isHoliday) {
+    public CalendarEvent() {
+    }
+
+    public CalendarEvent(String name,LocalDate date, LocalTime starTime, LocalTime endTime, String note) {
         this.name = name;
         this.date = date;
         this.starTime = starTime;
         this.endTime = endTime;
         this.note = note;
-        this.isHoliday = isHoliday;
     }
 
     public String getName() {

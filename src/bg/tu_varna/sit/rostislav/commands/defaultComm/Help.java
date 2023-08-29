@@ -14,12 +14,17 @@ public class Help implements Command {
         System.out.println("save as           saves the currently open file in <file>");
         System.out.println("help              prints this information");
         System.out.println("exit              exits the program");
+        System.out.println("Book               kakvo pravi ");
+
         System.out.println("Press Enter key to get back to main menu...");
+        // трябва да се добавят calendarComm
         try {
             System.in.read();
         }
         catch(Exception e)
-        {}
+        {
+            System.out.println("Error");
+        }
 
     }
 }
