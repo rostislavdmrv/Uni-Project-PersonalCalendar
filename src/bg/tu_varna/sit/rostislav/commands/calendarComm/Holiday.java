@@ -1,28 +1,37 @@
 package bg.tu_varna.sit.rostislav.commands.calendarComm;
 
+import bg.tu_varna.sit.rostislav.common.BulgarianHolidays;
 import bg.tu_varna.sit.rostislav.contracts.Command;
 import bg.tu_varna.sit.rostislav.models.CalendarEvent;
 import bg.tu_varna.sit.rostislav.models.MyCalendar;
 import bg.tu_varna.sit.rostislav.parsers.LocalDateAdapter;
 import bg.tu_varna.sit.rostislav.parsers.LocalTimeAdapter;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Holiday implements Command {
     @Override
     public void execute(List<String> arguments) throws Exception {
         MyCalendar calendar = MyCalendar.getInstance();
+        new BulgarianHolidays().addHoliday(new LocalDateAdapter().unmarshal(arguments.get(0)));
+
 
         for (CalendarEvent event : calendar.getCalendarEvent()) {
             if (event.getDate().equals( new LocalDateAdapter().unmarshal(arguments.get(0))))
             {
-                event.setHoliday(true);
+               // event.setHoliday(true);
+                calendar.removeCalendarEvent(event);
             }
 
 
         }
-        System.out.println("fffff");
+        System.out.println("Ops! today <"+(arguments.get(0)) +"> is Holiday !");
+        System.out.println("All booked appointments times for this data have been cancelled");
+        System.out.println("Try to book a new appointment on another day!");
 
 
     }
+
 }

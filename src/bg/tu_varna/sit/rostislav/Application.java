@@ -16,15 +16,14 @@ import java.util.List;
 
 public class Application {
 
-    public static final String EXIT_COMMAND = "exit";
 
     public static void main(String[] args) throws Exception {
 
         cli.run();
         /*MyCalendar myCalendar = MyCalendar.getInstance();
         LocalDate localDate= LocalDate.parse("2023-08-29");
-        LocalTime startTime= LocalTime.parse("18:33");
-        LocalTime endTime= LocalTime.parse("19:00");
+        LocalTime startTime= LocalTime.parse("10:00");
+        LocalTime endTime= LocalTime.parse("16:00");
         String name = "null";
         String note = "null";
         CalendarEvent calendarEvent=new  CalendarEvent(name,localDate,startTime,endTime,note);

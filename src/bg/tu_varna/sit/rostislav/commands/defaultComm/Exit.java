@@ -7,7 +7,7 @@ import java.util.List;
 public class Exit implements Command {
     @Override
     public void execute(List<String> arguments) {
-        System.out.println("hgfefgirfr");
+        System.out.println("Exiting the program...");
         System.exit(0);
 
     }

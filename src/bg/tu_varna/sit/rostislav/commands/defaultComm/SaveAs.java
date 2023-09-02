@@ -12,6 +12,7 @@ public class SaveAs implements Command {
     @Override
     public void execute(List<String> arguments) throws JAXBException {
         new JAXBParser().writeToFile(MyCalendar.getInstance(),new File(arguments.get(0)));
+        System.out.println("Successfully saved another " + arguments.get(0) );
 
     }
 }

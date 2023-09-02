@@ -11,7 +11,16 @@ import java.util.List;
 public class Save implements Command {
     @Override
     public void execute(List<String> arguments) throws JAXBException {
-        new JAXBParser().writeToFile(MyCalendar.getInstance(),new File(arguments.get(0)));
+
+        if (arguments.size() == 0) {
+            if (Open.lastOpenedFileName != null) {
+                new JAXBParser().writeToFile(MyCalendar.getInstance(), new File(String.valueOf(Open.lastOpenedFileName)));
+            } else {
+                System.out.println("Error closing file.");
+            }
+        }
+        System.out.println("Successfully saved " + Open.lastOpenedFileName );
 
     }
+
 }

@@ -22,7 +22,7 @@ public class CalendarEvent  implements Serializable {
     private LocalDate date;
     @XmlElement
     @XmlJavaTypeAdapter(LocalTimeAdapter.class)
-    private LocalTime starTime;
+    private LocalTime startTime;
     @XmlElement
     @XmlJavaTypeAdapter(LocalTimeAdapter.class)
     private LocalTime endTime;
@@ -34,10 +34,10 @@ public class CalendarEvent  implements Serializable {
     public CalendarEvent() {
     }
 
-    public CalendarEvent(String name,LocalDate date, LocalTime starTime, LocalTime endTime, String note) {
+    public CalendarEvent(String name,LocalDate date, LocalTime startTime, LocalTime endTime, String note) {
         this.name = name;
         this.date = date;
-        this.starTime = starTime;
+        this.startTime = startTime;
         this.endTime = endTime;
         this.note = note;
     }
@@ -58,12 +58,12 @@ public class CalendarEvent  implements Serializable {
         this.date = date;
     }
 
-    public LocalTime getStarTime() {
-        return starTime;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setStarTime(LocalTime starTime) {
-        this.starTime = starTime;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
     public LocalTime getEndTime() {
@@ -95,7 +95,7 @@ public class CalendarEvent  implements Serializable {
         return "CalendarEvent{" +
                 "name='" + name + '\'' +
                 ", date=" + date +
-                ", starTime=" + starTime +
+                ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", note='" + note + '\'' +
                 ", isHoliday=" + isHoliday +

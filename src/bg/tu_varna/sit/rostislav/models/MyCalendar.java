@@ -2,6 +2,7 @@ package bg.tu_varna.sit.rostislav.models;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +15,7 @@ public class MyCalendar implements Serializable {
     private Set<CalendarEvent> calendarEventSet;
 
     private MyCalendar() {
-        this.calendarEventSet = new TreeSet<>((a,b)->a.getStarTime().compareTo(b.getStarTime()));
+        this.calendarEventSet = new HashSet<>();
     }
 
     public static MyCalendar getInstance(){
@@ -33,6 +34,9 @@ public class MyCalendar implements Serializable {
 
         return this.calendarEventSet.remove(calendarEvent);
 
+    }
+    public  void clearEvents() {
+         this.calendarEventSet.clear();
     }
 
 

@@ -19,10 +19,9 @@ public class Unbook implements Command {
         boolean foundElement = false;
 
 
-
         for (CalendarEvent event : calendar.getCalendarEvent()) {
             if (event.getDate().equals( new LocalDateAdapter().unmarshal(arguments.get(0)))
-                    && event.getStarTime().equals(new LocalTimeAdapter().unmarshal(arguments.get(1)))
+                    && event.getStartTime().equals(new LocalTimeAdapter().unmarshal(arguments.get(1)))
                     && event.getEndTime().equals(new LocalTimeAdapter().unmarshal(arguments.get(2))))
             {
                 calendar.removeCalendarEvent(event);
@@ -31,11 +30,10 @@ public class Unbook implements Command {
 
             }
 
-
-
         }
+        System.out.println("You have successfully canceled your pre-booked appointment!");
         if (!foundElement){
-        System.out.println("NE E NAMEREN ELEMENT !");}
+        System.out.println("No an appointment was found according to your requirements!");}
 
 
 

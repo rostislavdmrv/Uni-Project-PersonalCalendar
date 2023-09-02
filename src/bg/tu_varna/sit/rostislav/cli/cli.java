@@ -37,7 +37,7 @@ public class cli {
                 case "save":
                     command = new Save();
                     break;
-                case "save as":
+                case "saveas":
                     command = new SaveAs();
                     break;
                 case "book":
@@ -75,10 +75,10 @@ public class cli {
 
             try {
                 command.execute(arguments);
-                //System.out.println("Successfully opened file");
+
             }
             catch (Exception e){
-                System.out.println("Error opening file");
+                System.out.println("Error opening file!");
             }
         }
 
