@@ -1,34 +1,26 @@
 package bg.tu_varna.sit.rostislav.commands.defaultComm;
 
-import bg.tu_varna.sit.rostislav.cli.cli;
 import bg.tu_varna.sit.rostislav.contracts.Command;
-import bg.tu_varna.sit.rostislav.models.MyCalendar;
-import bg.tu_varna.sit.rostislav.parsers.JAXBParser;
+import bg.tu_varna.sit.rostislav.models.CalendarsDatabase;
 
-import javax.xml.bind.JAXBException;
-import java.io.File;
 import java.util.List;
 
-import static bg.tu_varna.sit.rostislav.cli.cli.run;
 
 public class Close implements Command {
+    private final CalendarsDatabase calendarsDataBase;
+
+    /**
+     * Constructs a Close object with the provided {@link CalendarsDatabase} object.
+     * @param calendarsDataBase The CalendarService object that will be used to parse the calendar file.
+     */
+    public Close(CalendarsDatabase calendarsDataBase) {
+        this.calendarsDataBase = calendarsDataBase;
+    }
+
     @Override
-    public void execute(List<String> arguments) throws JAXBException {
-        MyCalendar calendar = MyCalendar.getInstance();
-
-        if (arguments.size() == 0) {
-            if (Open.lastOpenedFileName != null) {
-                calendar.clearEvents();
-                new JAXBParser().writeToFile(MyCalendar.getInstance(), new File(String.valueOf(Open.lastOpenedFileName)));
-            } else {
-                System.out.println("Error closing file.");
-            }
-        }
-
-        System.out.println("Successfully closed " + Open.lastOpenedFileName );
-        System.out.println();
-        System.out.println("To continue using the program you must open/create a file!");
-        run();
-
+    public void execute(List<String> arguments) throws Exception {
+        System.out.println("Successfully closed "+ calendarsDataBase.getLoadedFile().getAbsolutePath());
+        calendarsDataBase.setLoadedFile(null);
+        calendarsDataBase.setMyCalendarRepository(null);
     }
 }

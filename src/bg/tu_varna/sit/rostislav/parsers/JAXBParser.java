@@ -9,26 +9,37 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 
 public class JAXBParser {
+    public JAXBParser(){}
 
-    public MyCalendar readFromFile (File file) throws JAXBException {
+    public MyCalendar readFromFile (File file) throws Exception {
+        MyCalendar myCalendar;
+        try {
+            JAXBContext jaxbContext = JAXBContext .newInstance (MyCalendar.class) ;
 
-        JAXBContext jaxbContext = JAXBContext .newInstance (MyCalendar.class) ;
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            return (MyCalendar) unmarshaller. unmarshal(file);
+        }catch (JAXBException ignored){
+            throw new Exception("Cannot open: "+file.getAbsolutePath());
 
-        return (MyCalendar) unmarshaller. unmarshal(file);
+        }
 
     }
 
-    public void writeToFile (MyCalendar myCalendar, File file) throws JAXBException {
 
-            JAXBContext jaxbContext = JAXBContext .newInstance (MyCalendar.class) ;
+    public void writeToFile (MyCalendar myCalendar, File file) throws Exception {
+       try {
+           JAXBContext jaxbContext = JAXBContext .newInstance (MyCalendar.class) ;
 
-            Marshaller marshaller = jaxbContext.createMarshaller () ;
+           Marshaller marshaller = jaxbContext.createMarshaller () ;
 
-            marshaller. setProperty (Marshaller.JAXB_FORMATTED_OUTPUT, true);
+           marshaller. setProperty (Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-            marshaller.marshal (myCalendar, file);
+           marshaller.marshal (myCalendar, file);
+       }catch (JAXBException ignored){
+           throw new Exception("File cannot be saved "+ file.getAbsolutePath());
+       }
+
     }
 
 }

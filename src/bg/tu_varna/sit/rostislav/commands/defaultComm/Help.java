@@ -5,6 +5,7 @@ import bg.tu_varna.sit.rostislav.contracts.Command;
 import java.util.List;
 
 public class Help implements Command {
+    public Help(){}
     @Override
     public void execute(List<String> arguments) {
         System.out.println("The following commands are supported:");

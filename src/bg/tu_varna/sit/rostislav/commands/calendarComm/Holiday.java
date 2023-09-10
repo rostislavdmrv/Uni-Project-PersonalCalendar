@@ -12,26 +12,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Holiday implements Command {
-    @Override
-    public void execute(List<String> arguments) throws Exception {
-        MyCalendar calendar = MyCalendar.getInstance();
-        new BulgarianHolidays().addHoliday(new LocalDateAdapter().unmarshal(arguments.get(0)));
+    private final MyCalendar myCalendar;
+    /**
+     * Date to search.
+     */
+    private LocalDate date;
 
 
-        for (CalendarEvent event : calendar.getCalendarEvent()) {
-            if (event.getDate().equals( new LocalDateAdapter().unmarshal(arguments.get(0))))
-            {
-               // event.setHoliday(true);
-                calendar.removeCalendarEvent(event);
-            }
 
-
-        }
-        System.out.println("Ops! today <"+(arguments.get(0)) +"> is Holiday !");
-        System.out.println("All booked appointments times for this data have been cancelled");
-        System.out.println("Try to book a new appointment on another day!");
-
-
+    public Holiday(MyCalendar myCalendar, List<String> arguments) throws Exception {
+        this.myCalendar = myCalendar;
+        date= new LocalDateAdapter().unmarshal(arguments.get(1));
     }
 
+
+    @Override
+    public void execute(List<String> arguments) throws Exception {
+        if (myCalendar.checkIsHoliday(date)){
+            throw new Exception("That date is already holiday");
+        }else {
+            myCalendar.addHoliday(date);
+            for (CalendarEvent event : myCalendar.getCalendarEvent()) {
+                if (event.getDate().equals(date)) {
+                    myCalendar.removeCalendarEvent(event);
+                }
+
+            }
+            System.out.println("TODAY is holiday ! All events for today was canceled!");
+        }
+
+    }
 }
+
+
+

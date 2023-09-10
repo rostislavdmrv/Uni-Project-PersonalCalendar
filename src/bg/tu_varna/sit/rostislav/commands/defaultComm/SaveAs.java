@@ -1,18 +1,40 @@
 package bg.tu_varna.sit.rostislav.commands.defaultComm;
 
 import bg.tu_varna.sit.rostislav.contracts.Command;
-import bg.tu_varna.sit.rostislav.models.MyCalendar;
-import bg.tu_varna.sit.rostislav.parsers.JAXBParser;
+import bg.tu_varna.sit.rostislav.models.CalendarsDatabase;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.util.List;
+import java.util.Scanner;
 
 public class SaveAs implements Command {
+    private  final CalendarsDatabase calendarsDatabase;
+
+    private String newFile;
+
+    public SaveAs(CalendarsDatabase calendarsDatabase, List<String> instructions) {
+        this.calendarsDatabase = calendarsDatabase;
+        this.newFile=instructions.get(0);
+    }
+
+
     @Override
-    public void execute(List<String> arguments) throws JAXBException {
-        new JAXBParser().writeToFile(MyCalendar.getInstance(),new File(arguments.get(0)));
-        System.out.println("Successfully saved another " + arguments.get(0) );
+    public void execute(List<String> arguments) throws Exception {
+
+        if (calendarsDatabase.getLoadedFile().exists()){
+            System.out.println("You have to use SAVE command !");
+
+        }else {
+
+            calendarsDatabase.setLoadedFile(new File(newFile));
+
+            calendarsDatabase.exportFromMyCalendarRepository();
+
+            System.out.println("Successfully saved another " + calendarsDatabase.getLoadedFile().getAbsolutePath());
+        }
 
     }
+
 }
+
+

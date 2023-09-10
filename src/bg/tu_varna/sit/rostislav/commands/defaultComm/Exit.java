@@ -5,6 +5,9 @@ import bg.tu_varna.sit.rostislav.contracts.Command;
 import java.util.List;
 
 public class Exit implements Command {
+    public Exit() {
+    }
+
     @Override
     public void execute(List<String> arguments) {
         System.out.println("Exiting the program...");
