@@ -1,5 +1,6 @@
 package bg.tu_varna.sit.rostislav.parsers;
 
+import bg.tu_varna.sit.rostislav.exception.ExceptionMessages;
 import bg.tu_varna.sit.rostislav.models.MyCalendar;
 
 import javax.xml.bind.JAXBContext;
@@ -20,7 +21,7 @@ public class JAXBParser {
 
             return (MyCalendar) unmarshaller. unmarshal(file);
         }catch (JAXBException ignored){
-            throw new Exception("Cannot open: "+file.getAbsolutePath());
+            throw new Exception(ExceptionMessages.CAN_NOT_OPEN +file.getAbsolutePath());
 
         }
 
@@ -37,7 +38,7 @@ public class JAXBParser {
 
            marshaller.marshal (myCalendar, file);
        }catch (JAXBException ignored){
-           throw new Exception("File cannot be saved "+ file.getAbsolutePath());
+           throw new Exception(ExceptionMessages.CAN_NOT_BE_SAVED+ file.getAbsolutePath());
        }
 
     }

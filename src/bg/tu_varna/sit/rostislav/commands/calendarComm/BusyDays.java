@@ -1,13 +1,12 @@
 package bg.tu_varna.sit.rostislav.commands.calendarComm;
 
-import bg.tu_varna.sit.rostislav.common.BulgarianHolidays;
+
 import bg.tu_varna.sit.rostislav.contracts.Command;
+import bg.tu_varna.sit.rostislav.exception.EventException;
 import bg.tu_varna.sit.rostislav.models.CalendarEvent;
 import bg.tu_varna.sit.rostislav.models.MyCalendar;
 import bg.tu_varna.sit.rostislav.parsers.LocalDateAdapter;
-import bg.tu_varna.sit.rostislav.parsers.LocalTimeAdapter;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
 import java.time.DayOfWeek;
@@ -20,9 +19,7 @@ public class BusyDays implements Command {
 
     private LocalDate endDate;
 
-    /**
-     * Set of loaded calendar events.
-     */
+
     private Set<CalendarEvent> calendarEvents;
     List<DayOfWeek> sortedDays;
 
@@ -37,7 +34,7 @@ public class BusyDays implements Command {
 
 
     @Override
-    public void execute(List<String> arguments) throws Exception {
+    public void execute(List<String> arguments) throws EventException {
 
 
         List<CalendarEvent> busyEvents = new ArrayList<>();

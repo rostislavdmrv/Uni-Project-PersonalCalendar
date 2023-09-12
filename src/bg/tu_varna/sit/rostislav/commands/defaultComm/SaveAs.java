@@ -1,11 +1,11 @@
 package bg.tu_varna.sit.rostislav.commands.defaultComm;
 
+import bg.tu_varna.sit.rostislav.common.ConstantMessages;
 import bg.tu_varna.sit.rostislav.contracts.Command;
 import bg.tu_varna.sit.rostislav.models.CalendarsDatabase;
 
 import java.io.File;
 import java.util.List;
-import java.util.Scanner;
 
 public class SaveAs implements Command {
     private  final CalendarsDatabase calendarsDatabase;
@@ -21,8 +21,8 @@ public class SaveAs implements Command {
     @Override
     public void execute(List<String> arguments) throws Exception {
 
-        if (calendarsDatabase.getLoadedFile().exists()){
-            System.out.println("You have to use SAVE command !");
+        if (calendarsDatabase.getLoadedFile().equals(newFile)){
+            System.out.println(ConstantMessages.USE_SAVE);
 
         }else {
 
@@ -30,7 +30,7 @@ public class SaveAs implements Command {
 
             calendarsDatabase.exportFromMyCalendarRepository();
 
-            System.out.println("Successfully saved another " + calendarsDatabase.getLoadedFile().getAbsolutePath());
+            System.out.println(ConstantMessages.SUCCESS_SAVEAS + calendarsDatabase.getLoadedFile().getAbsolutePath());
         }
 
     }

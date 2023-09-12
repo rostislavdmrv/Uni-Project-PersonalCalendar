@@ -1,5 +1,6 @@
 package bg.tu_varna.sit.rostislav.commands.defaultComm;
 
+import bg.tu_varna.sit.rostislav.common.ConstantMessages;
 import bg.tu_varna.sit.rostislav.contracts.Command;
 import bg.tu_varna.sit.rostislav.models.CalendarsDatabase;
 import bg.tu_varna.sit.rostislav.models.MyCalendar;
@@ -25,15 +26,15 @@ public class Open  implements Command {
 
             calendarsDatabase.importToMyCalendarRepository();
 
-            System.out.println("Successfully opened: " + fileToOpen);
+            System.out.println(ConstantMessages.SUCCESS_OPEN + fileToOpen);
 
             if (calendarsDatabase.getMyCalendarRepository().getCalendarEvent().isEmpty()) {
-                System.out.println("File is empty.");
+                System.out.println(ConstantMessages.FILE_IS_EMPTY);
             }
 
         }else {
             calendarsDatabase.createFile();
-            System.out.println("New file is create and load: " + fileToOpen);
+            System.out.println(ConstantMessages.CREATE_NEW_FILE + fileToOpen);
         }
     }
 

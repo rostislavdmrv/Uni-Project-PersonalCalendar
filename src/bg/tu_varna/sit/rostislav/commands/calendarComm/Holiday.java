@@ -1,14 +1,16 @@
 package bg.tu_varna.sit.rostislav.commands.calendarComm;
 
-import bg.tu_varna.sit.rostislav.common.BulgarianHolidays;
+
+import bg.tu_varna.sit.rostislav.common.ConstantMessages;
 import bg.tu_varna.sit.rostislav.contracts.Command;
+import bg.tu_varna.sit.rostislav.exception.EventException;
+import bg.tu_varna.sit.rostislav.exception.ExceptionMessages;
 import bg.tu_varna.sit.rostislav.models.CalendarEvent;
 import bg.tu_varna.sit.rostislav.models.MyCalendar;
 import bg.tu_varna.sit.rostislav.parsers.LocalDateAdapter;
-import bg.tu_varna.sit.rostislav.parsers.LocalTimeAdapter;
+
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Holiday implements Command {
@@ -22,14 +24,14 @@ public class Holiday implements Command {
 
     public Holiday(MyCalendar myCalendar, List<String> arguments) throws Exception {
         this.myCalendar = myCalendar;
-        date= new LocalDateAdapter().unmarshal(arguments.get(1));
+        date= new LocalDateAdapter().unmarshal(arguments.get(0));
     }
 
 
     @Override
-    public void execute(List<String> arguments) throws Exception {
+    public void execute(List<String> arguments) throws EventException {
         if (myCalendar.checkIsHoliday(date)){
-            throw new Exception("That date is already holiday");
+            throw new EventException(ExceptionMessages.ALREADY_HOLIDAY_DATE);
         }else {
             myCalendar.addHoliday(date);
             for (CalendarEvent event : myCalendar.getCalendarEvent()) {
@@ -38,7 +40,7 @@ public class Holiday implements Command {
                 }
 
             }
-            System.out.println("TODAY is holiday ! All events for today was canceled!");
+            System.out.println(ConstantMessages.HOLIDAY);
         }
 
     }

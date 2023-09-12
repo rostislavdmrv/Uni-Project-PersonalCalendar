@@ -1,6 +1,9 @@
 package bg.tu_varna.sit.rostislav.commands.calendarComm;
 
+import bg.tu_varna.sit.rostislav.common.ConstantMessages;
 import bg.tu_varna.sit.rostislav.contracts.Command;
+import bg.tu_varna.sit.rostislav.exception.EventException;
+import bg.tu_varna.sit.rostislav.exception.ExceptionMessages;
 import bg.tu_varna.sit.rostislav.models.CalendarEvent;
 import bg.tu_varna.sit.rostislav.models.CalendarsDatabase;
 import bg.tu_varna.sit.rostislav.models.MyCalendar;
@@ -29,21 +32,21 @@ public class FindSlotWith implements Command {
     /**
      * Sublist of passed arguments.
      */
-    private List<String> subListOfInstructions;
+    private List<String> arguments;
 
     /**
      * Filtered caledar events from loaded calendar
      */
-    private HashSet<CalendarEvent> loadedCalendarEventsFiltered;
+    private HashSet<CalendarEvent> loadedCalendarEventsFilter;
 
 
     public FindSlotWith(CalendarsDatabase calendarsDatabase, List<String> arguments) throws Exception {
         loadedCalendar= calendarsDatabase.getMyCalendarRepository();
         myCalendars=new HashSet<>();
         date= new LocalDateAdapter().unmarshal(arguments.get(0));
-        subListOfInstructions=arguments.subList(0,2);
+        this.arguments=arguments.subList(0,2);
 
-        loadedCalendarEventsFiltered=new HashSet<>(loadedCalendar.getCalendarEvent().stream().filter(item -> item.getDate().equals(date)).toList());
+        loadedCalendarEventsFilter=new HashSet<>(loadedCalendar.getCalendarEvent().stream().filter(item -> item.getDate().equals(date)).toList());
 
         for(int i=2;i<arguments.size();i++) {
             String externalFileDirectory = arguments.get(i);
@@ -52,7 +55,7 @@ public class FindSlotWith implements Command {
             File file = new File(externalFileDirectory);
 
             if (calendarsDatabase.getLoadedFile().equals(file)) {
-                System.out.println("You can't pass as an argument currently opened calendar.\n");
+                System.out.println(ConstantMessages.CAN_NOT_PASS_ARGUMENT);
                 continue;
             }
 
@@ -61,7 +64,7 @@ public class FindSlotWith implements Command {
                 calendar.setNameOfCalendar(externalFileDirectory);
                 myCalendars.add(calendar);
             } else{
-                throw new Exception("File " + externalFileDirectory + "does not exist.\nOperation cancelled");
+                throw new Exception(externalFileDirectory + ExceptionMessages.NOT_EXIST);
             }
         }
     }
@@ -72,9 +75,9 @@ public class FindSlotWith implements Command {
 
         if(isExistInCalendar(date,loadedCalendar.getCalendarEvent())) {
 
-            FindSlot findSlot = new FindSlot(loadedCalendar, subListOfInstructions);
+            FindSlot findSlot = new FindSlot(loadedCalendar, arguments);
             if (findSlot.findFreeSlots().isEmpty()) {
-                throw new Exception("There is no free space in loaded calendar");
+                throw new Exception(ExceptionMessages.NO_FREE_SPACE);
             }
 
         }
@@ -83,7 +86,7 @@ public class FindSlotWith implements Command {
 
             if(isExistInCalendar(date,loadedCalendar.getCalendarEvent())) {
 
-                FindSlot findSlot = new FindSlot(externalPersonalCalendar, subListOfInstructions);
+                FindSlot findSlot = new FindSlot(externalPersonalCalendar, arguments);
 
                 if (findSlot.findFreeSlots().isEmpty())
                     continue;
@@ -94,24 +97,17 @@ public class FindSlotWith implements Command {
             MyCalendar mixedPersonalCalendar =new MyCalendar();
             mixedPersonalCalendar.setCalendarEventSet(uniteCalendars(externalCalendarEventsFiltered));
 
-            System.out.print("\n"+externalPersonalCalendar.getNameOfCalendar()+" - ");
-            new FindSlot(mixedPersonalCalendar,subListOfInstructions).execute( arguments);
+            System.out.print(ConstantMessages.COMBINE +externalPersonalCalendar.getNameOfCalendar()+"-");
+            new FindSlot(mixedPersonalCalendar,arguments).execute( arguments);
         }
     }
 
-    //region InternalMethods
-    /**
-     * Checks if there are any events in the specified calendar for the given date.
-     * @param dateToSearch      the date to search for events
-     * @param calendarEvents    the calendar events to search
-     * @return true if there are any events for the given date, false otherwise
-     */
+
     private boolean isExistInCalendar(LocalDate dateToSearch,Set<CalendarEvent> calendarEvents){
         for (CalendarEvent event : calendarEvents) {
             if (event.getDate().equals(dateToSearch)) {
-                if (!event.isHoliday()) {
-                    return true;
-                }
+                return true;
+
             }
         }
 
@@ -119,13 +115,13 @@ public class FindSlotWith implements Command {
     }
 
 
-    private HashSet<CalendarEvent> uniteCalendars(HashSet<CalendarEvent> secondCalendar) throws Exception {
+    private HashSet<CalendarEvent> uniteCalendars(HashSet<CalendarEvent> secondCalendar)  {
         HashSet<CalendarEvent> combinedEventsByDate=new HashSet<>();
 
         HashSet<CalendarEvent> bannedEvents=new HashSet<>();
 
 
-        for(CalendarEvent firstCalendarEvent: loadedCalendarEventsFiltered){
+        for(CalendarEvent firstCalendarEvent: loadedCalendarEventsFilter){
 
             for(CalendarEvent secondCalendarEvent: secondCalendar){
 
@@ -156,7 +152,7 @@ public class FindSlotWith implements Command {
             }
         }
 
-        combinedEventsByDate.addAll(loadedCalendarEventsFiltered);
+        combinedEventsByDate.addAll(loadedCalendarEventsFilter);
         combinedEventsByDate.addAll(secondCalendar);
 
         for(CalendarEvent event:bannedEvents){
@@ -167,7 +163,7 @@ public class FindSlotWith implements Command {
     }
 
 
-    private CalendarEvent generateEvent(CalendarEvent firstCalendarEvent,CalendarEvent secondCalendarEvent) throws Exception {
+    private CalendarEvent generateEvent(CalendarEvent firstCalendarEvent,CalendarEvent secondCalendarEvent)  {
         LocalTime minStartTime;
         LocalTime maxEndTime;
 

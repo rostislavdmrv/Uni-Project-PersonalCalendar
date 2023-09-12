@@ -1,6 +1,8 @@
 package bg.tu_varna.sit.rostislav.cli;
 
+import bg.tu_varna.sit.rostislav.common.ConstantMessages;
 import bg.tu_varna.sit.rostislav.contracts.Command;
+import bg.tu_varna.sit.rostislav.contracts.CommandLineInterface;
 import bg.tu_varna.sit.rostislav.factory.CalendarFactory;
 import bg.tu_varna.sit.rostislav.models.CalendarsDatabase;
 import bg.tu_varna.sit.rostislav.models.MyCalendar;
@@ -12,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class Cli {
+public class Cli implements CommandLineInterface<Command> {
     private CalendarsDatabase calendarsDatabase;
     private CalendarFactory calendarFactory;
     private MyCalendar myCalendar;
@@ -24,7 +26,7 @@ public class Cli {
         calendarsDatabase = new CalendarsDatabase(myCalendar,jaxbParser);
         calendarFactory = new CalendarFactory(calendarsDatabase);
     }
-
+    @Override
     public void run() {
         System.out.println("<---\t\t MY PERSONAL CALENDAR \t\t--->\n");
 
@@ -40,7 +42,7 @@ public class Cli {
                 if (command != null) {
                     command.execute(arguments);
                 } else {
-                    System.out.println("Unknown command: " + stringCommand);
+                    System.out.println(ConstantMessages.UNKNOWN_COMMAND + stringCommand);
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());

@@ -34,9 +34,10 @@ public class MyCalendar {
         return this.calendarEventSet.remove(calendarEvent);
 
     }
-    public  void clearEvents()  {
-         this.calendarEventSet.clear();
+    public boolean addAllEvents(Set<CalendarEvent> events){
+        return calendarEventSet.addAll(events);
     }
+
 
     public String getNameOfCalendar() {
         return nameOfCalendar;
@@ -55,9 +56,7 @@ public class MyCalendar {
     public void setCalendarEventSet(Set<CalendarEvent> calendarEventSet) {
         this.calendarEventSet = calendarEventSet;
     }
-    public boolean addAllEvents(Set<CalendarEvent> events){
-        return calendarEventSet.addAll(events);
-    }
+
 
     /**
      * Checks if this Calendar is empty.

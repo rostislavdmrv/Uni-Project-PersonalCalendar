@@ -1,6 +1,9 @@
 package bg.tu_varna.sit.rostislav.commands.calendarComm;
 
+import bg.tu_varna.sit.rostislav.common.ConstantMessages;
 import bg.tu_varna.sit.rostislav.contracts.Command;
+import bg.tu_varna.sit.rostislav.exception.EventException;
+import bg.tu_varna.sit.rostislav.exception.ExceptionMessages;
 import bg.tu_varna.sit.rostislav.models.CalendarEvent;
 import bg.tu_varna.sit.rostislav.models.MyCalendar;
 import bg.tu_varna.sit.rostislav.parsers.LocalDateAdapter;
@@ -9,6 +12,7 @@ import bg.tu_varna.sit.rostislav.parsers.LocalTimeAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -36,25 +40,25 @@ public class Unbook implements Command {
 
 
     @Override
-    public void execute(List<String> arguments) throws Exception {
+    public void execute(List<String> arguments) throws EventException {
+
+        Iterator<CalendarEvent> iterator = loadedCalendarEvents.iterator();
         boolean eventRemoved = false;
-        for (CalendarEvent foundEvent : loadedCalendarEvents) {
-            if (foundEvent.getDate().equals(date) && foundEvent.getStartTime().equals(startTime)&& foundEvent.getEndTime().equals(endTime)){
-                loadedCalendarEvents.remove(foundEvent);
+
+        while (iterator.hasNext()) {
+            CalendarEvent foundEvent = iterator.next();
+            if (foundEvent.getDate().equals(date) && foundEvent.getStartTime().equals(startTime) && foundEvent.getEndTime().equals(endTime)) {
+                iterator.remove();
                 eventRemoved = true;
             }
-
         }
-
-        /*CalendarEvent calendarEvent = new CalendarEvent("", date, startTime, endTime, "");
-
-        boolean eventRemoved = loadedCalendarEvents.removeIf(event -> event.equals(calendarEvent));*/
 
         if (eventRemoved) {
-            System.out.printf("You have successfully canceled your pre-booked appointment!");
+            System.out.printf(ConstantMessages.SUCCESS_UNBOOK);
         } else {
-            throw new Exception("No an appointment was found according to your requirements!");
+            throw new EventException(ExceptionMessages.NOT_SUCCESS_UNBOOK);
         }
+
 
 
 

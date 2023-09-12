@@ -1,5 +1,6 @@
 package bg.tu_varna.sit.rostislav.commands.defaultComm;
 
+import bg.tu_varna.sit.rostislav.common.ConstantMessages;
 import bg.tu_varna.sit.rostislav.contracts.Command;
 import bg.tu_varna.sit.rostislav.models.CalendarsDatabase;
 
@@ -21,6 +22,6 @@ public class Save implements Command {
     public void execute(List<String> arguments) throws Exception {
         calendarsDatabase.exportFromMyCalendarRepository();
 
-        System.out.println("Successfully saved "+ calendarsDatabase.getLoadedFile().getAbsolutePath());
+        System.out.println(ConstantMessages.SUCCESS_SAVE + calendarsDatabase.getLoadedFile().getAbsolutePath());
     }
 }

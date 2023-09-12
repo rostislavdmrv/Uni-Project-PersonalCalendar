@@ -1,18 +1,16 @@
 package bg.tu_varna.sit.rostislav.commands.calendarComm;
 
-import bg.tu_varna.sit.rostislav.common.BulgarianHolidays;
+import bg.tu_varna.sit.rostislav.common.ConstantMessages;
 import bg.tu_varna.sit.rostislav.contracts.Command;
+import bg.tu_varna.sit.rostislav.exception.EventException;
 import bg.tu_varna.sit.rostislav.exception.ExceptionMessages;
 import bg.tu_varna.sit.rostislav.models.CalendarEvent;
 import bg.tu_varna.sit.rostislav.models.MyCalendar;
 import bg.tu_varna.sit.rostislav.parsers.LocalDateAdapter;
 import bg.tu_varna.sit.rostislav.parsers.LocalTimeAdapter;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
-import java.util.Calendar;
 import java.util.List;
 
 public class Book implements Command {
@@ -24,15 +22,11 @@ public class Book implements Command {
 
 
     private LocalTime startTime;
-    /**
-     * End time of the event.
-     */
+
     private LocalTime endTime;
 
 
-    /**
-     *
-     */
+
     private String note;
 
 
@@ -47,7 +41,7 @@ public class Book implements Command {
 
 
     @Override
-    public void execute(List<String> arguments) throws Exception {
+    public void execute(List<String> arguments) throws EventException {
 
 
         CalendarEvent calendarEvent=new CalendarEvent(name,date,startTime,endTime,note);
@@ -64,11 +58,12 @@ public class Book implements Command {
         if(myCalendar.checkIsHoliday(date)){
             throw new IllegalArgumentException(ExceptionMessages.HOLIDAY_DATE);
         }
+
         if(incompatible)
-            throw new Exception("The event you have typed is currently incompatible with event:\n"+incompatibleEvent);
+            throw new EventException(ExceptionMessages.IMPOSSIBLE_BOOK+incompatibleEvent);
         else {
             myCalendar.addCalendarEvent(calendarEvent);
-            System.out.println("Event successfully booked:\n "+calendarEvent);
+            System.out.println(ConstantMessages.SUCCESS_BOOK +calendarEvent);
         }
 
 

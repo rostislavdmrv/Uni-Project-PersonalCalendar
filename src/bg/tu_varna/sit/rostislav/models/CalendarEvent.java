@@ -43,11 +43,6 @@ public class CalendarEvent  {
         this.setNote(note);
     }
 
-    public CalendarEvent(LocalDate dateOfEvent, LocalTime startTime) {
-        this.dateOfEvent = dateOfEvent;
-        this.startTime = startTime;
-    }
-
     public String getName() {
         return eventName;
     }
@@ -141,7 +136,7 @@ public class CalendarEvent  {
             workDay=" Yes!";
 
         }
-        return "-------------------------------------------------------------------------------------------------------------------------------\n" +
+        return "-------------------------------------------------------------------------------------------------------------------------------------------------------\n" +
                 "CalendarEvent:        \n" +
                 "Work day ->" + workDay +" | "+
                 "NameOfEvent -> " + eventName + " | " +
@@ -149,6 +144,6 @@ public class CalendarEvent  {
                 "with startTime : " + startTime + " | " +
                 "with endTime : " + endTime +" | " +
                 "Note -> " + note
-                +"\n-------------------------------------------------------------------------------------------------------------------------------";
+                +"\n------------------------------------------------------------------------------------------------------------------------------------------------------";
     }
 }

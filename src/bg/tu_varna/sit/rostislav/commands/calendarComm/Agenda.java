@@ -2,7 +2,9 @@ package bg.tu_varna.sit.rostislav.commands.calendarComm;
 
 
 import bg.tu_varna.sit.rostislav.common.BulgarianHolidays;
+import bg.tu_varna.sit.rostislav.common.ConstantMessages;
 import bg.tu_varna.sit.rostislav.contracts.Command;
+import bg.tu_varna.sit.rostislav.exception.EventException;
 import bg.tu_varna.sit.rostislav.models.CalendarEvent;
 import bg.tu_varna.sit.rostislav.models.MyCalendar;
 import bg.tu_varna.sit.rostislav.parsers.LocalDateAdapter;
@@ -26,7 +28,7 @@ public class Agenda  implements Command {
     }
 
     @Override
-    public void execute(List<String> arguments) throws Exception {
+    public void execute(List<String> arguments) throws EventException {
 
         Set<CalendarEvent> calendarEventForThatDay = new TreeSet<>((a,b)->a.getStartTime().compareTo(b.getStartTime()));
         if (!myCalendar.checkIsHoliday(date)) {
@@ -37,13 +39,13 @@ public class Agenda  implements Command {
 
                 }
             }
-            System.out.println("List of that day -->" + date + " :\n");
+            System.out.println(ConstantMessages.AGENDA + date + " :\n");
 
             for (CalendarEvent event : calendarEventForThatDay) {
                 System.out.println(event.toString());
             }
         }else {
-            System.out.println("Today is holiday!There are no booked appointments!");
+            System.out.println(ConstantMessages.NOT_AGENDA);
         }
 
     }
